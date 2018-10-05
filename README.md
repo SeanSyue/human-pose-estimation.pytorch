@@ -1,47 +1,12 @@
 # Simple Baselines for Human Pose Estimation and Tracking
 
-## News
-Our entry using this repo has won the winner of [PoseTrack2018 Multi-person Pose Tracking Challenge](https://posetrack.net/workshops/eccv2018/posetrack_eccv_2018_results.html)!<br>
-Our entry using this repo ranked 2nd place in the [keypoint detection task of COCO 2018](http://cocodataset.org/#keypoints-leaderboard)!
-
-## Introduction
-This is an official pytorch implementation of [*Simple Baselines for Human Pose Estimation and Tracking*](https://arxiv.org/abs/1804.06208). This work provides baseline methods that are surprisingly simple and effective, thus helpful for inspiring and evaluating new ideas for the field. State-of-the-art results are achieved on challenging benchmarks. On COCO keypoints valid dataset, our best **single model** achieves **74.3 of mAP**. You can reproduce our results using this repo. All models are provided for research purpose.    </br>
-
-## Main Results
-### Results on MPII val
-| Arch | Head | Shoulder | Elbow | Wrist | Hip | Knee | Ankle | Mean | Mean@0.1|
-|---|---|---|---|---|---|---|---|---|---|
-| 256x256_pose_resnet_50_d256d256d256 | 96.351 | 95.329 | 88.989 | 83.176 | 88.420 | 83.960 | 79.594 | 88.532 | 33.911 |
-| 384x384_pose_resnet_50_d256d256d256 | 96.658 | 95.754 | 89.790 | 84.614 | 88.523 | 84.666 | 79.287 | 89.066 | 38.046 |
-| 256x256_pose_resnet_101_d256d256d256 | 96.862 | 95.873 | 89.518 | 84.376 | 88.437 | 84.486 | 80.703 | 89.131 | 34.020 |
-| 384x384_pose_resnet_101_d256d256d256 | 96.965 | 95.907 | 90.268 | 85.780 | 89.597 | 85.935 | 82.098 | 90.003 | 38.860 |
-| 256x256_pose_resnet_152_d256d256d256 | 97.033 | 95.941 | 90.046 | 84.976 | 89.164 | 85.311 | 81.271 | 89.620 | 35.025 |
-| 384x384_pose_resnet_152_d256d256d256 | 96.794 | 95.618 | 90.080 | 86.225 | 89.700 | 86.862 | 82.853 | 90.200 | 39.433 |
-
-### Note:
-- Flip test is used
-
-### Results on COCO val2017 with detector having human AP of 56.4 on COCO val2017 dataset
-| Arch | AP | Ap .5 | AP .75 | AP (M) | AP (L) | AR | AR .5 | AR .75 | AR (M) | AR (L) |
-|---|---|---|---|---|---|---|---|---|---|---|
-| 256x192_pose_resnet_50_d256d256d256 | 0.704 | 0.886 | 0.783 | 0.671 | 0.772 | 0.763 | 0.929 | 0.834 | 0.721 | 0.824 |
-| 384x288_pose_resnet_50_d256d256d256 | 0.722 | 0.893 | 0.789 | 0.681 | 0.797 | 0.776 | 0.932 | 0.838 | 0.728 | 0.846 |
-| 256x192_pose_resnet_101_d256d256d256 | 0.714 | 0.893 | 0.793 | 0.681 | 0.781 | 0.771 | 0.934 | 0.840 | 0.730 | 0.832 |
-| 384x288_pose_resnet_101_d256d256d256 | 0.736 | 0.896 | 0.803 | 0.699 | 0.811 | 0.791 | 0.936 | 0.851 | 0.745 | 0.858 |
-| 256x192_pose_resnet_152_d256d256d256 | 0.720 | 0.893 | 0.798 | 0.687 | 0.789 | 0.778 | 0.934 | 0.846 | 0.736 | 0.839 |
-| 384x288_pose_resnet_152_d256d256d256 | 0.743 | 0.896 | 0.811 | 0.705 | 0.816 | 0.797 | 0.937 | 0.858 | 0.751 | 0.863 |
-
-### Note:
-- Flip test is used
-- Person detector has person AP of 56.4 on COCO val2017 dataset 
-
 ## Environment
 The code is developed using python 3.6 on Ubuntu 16.04. NVIDIA GPUs ared needed. The code is developed and tested using 4 NVIDIA P100 GPUS cards. Other platform or GPU card are not fully tested.
 
 ## Quick start
 ### Installation
 1. Install pytorch >= v0.4.0 following [official instruction](https://pytorch.org/)
-2. Disable cudnn for batch_norm
+2. (Do this if needed) Disable cudnn for batch_norm([check for detail](https://github.com/Microsoft/human-pose-estimation.pytorch/issues/8#issuecomment-416183621))
    ```
    # PYTORCH=/path/to/pytorch
    # for pytorch v0.4.0
@@ -50,17 +15,17 @@ The code is developed using python 3.6 on Ubuntu 16.04. NVIDIA GPUs ared needed.
    sed -i "1254s/torch\.backends\.cudnn\.enabled/False/g" ${PYTORCH}/torch/nn/functional.py
    ```
    Note that instructions like # PYTORCH=/path/to/pytorch indicate that you should pick a path where you'd like to have pytorch installed  and then set an environment variable (PYTORCH in this case) accordingly.
-1. Clone this repo, and we'll call the directory that you cloned as ${POSE_ROOT}
-2. Install dependencies.
+3. Clone this repo, and we'll call the directory that you cloned as ${POSE_ROOT}
+4. Install dependencies.
    ```
    pip install -r requirements.txt
    ```
-3. Make libs
+5. Make libs
    ```
    cd ${POSE_ROOT}/lib
    make
    ```
-3. Install [COCOAPI](https://github.com/cocodataset/cocoapi):
+6. Install [COCOAPI](https://github.com/cocodataset/cocoapi):
    ```
    # COCOAPI=/path/to/clone/cocoapi
    git clone https://github.com/cocodataset/cocoapi.git $COCOAPI
@@ -72,8 +37,8 @@ The code is developed using python 3.6 on Ubuntu 16.04. NVIDIA GPUs ared needed.
    python3 setup.py install --user
    ```
    Note that instructions like # COCOAPI=/path/to/install/cocoapi indicate that you should pick a path where you'd like to have the software cloned and then set an environment variable (COCOAPI in this case) accordingly.
-3. Download pytorch imagenet pretrained models from [pytorch model zoo](https://pytorch.org/docs/stable/model_zoo.html#module-torch.utils.model_zoo). 
-4. Download mpii and coco pretrained model from [OneDrive](https://1drv.ms/f/s!AhIXJn_J-blW0D5ZE4ArK9wk_fvw) or [GoogleDrive](https://drive.google.com/drive/folders/13_wJ6nC7my1KKouMkQMqyr9r1ZnLnukP?usp=sharing). Please download them under ${POSE_ROOT}/models/pytorch, and make them look like this:
+7. Download pytorch imagenet pretrained models from [pytorch model zoo](https://pytorch.org/docs/stable/model_zoo.html#module-torch.utils.model_zoo). 
+8. Download mpii and coco pretrained model from [OneDrive](https://1drv.ms/f/s!AhIXJn_J-blW0D5ZE4ArK9wk_fvw) or [GoogleDrive](https://drive.google.com/drive/folders/13_wJ6nC7my1KKouMkQMqyr9r1ZnLnukP?usp=sharing). Please download them under ${POSE_ROOT}/models/pytorch, and make them look like this:
 
    ```
    ${POSE_ROOT}
@@ -100,7 +65,7 @@ The code is developed using python 3.6 on Ubuntu 16.04. NVIDIA GPUs ared needed.
 
    ```
 
-4. Init output(training model output directory) and log(tensorboard log directory) directory.
+9. Init output(training model output directory) and log(tensorboard log directory) directory.
 
    ```
    mkdir output 
@@ -197,7 +162,7 @@ python pose_estimation/train.py \
 ```
 
 
-### Citation
+## Citation
 If you use our code or models in your research, please cite with
 ```
 @inproceedings{xiao2018simple,
