@@ -16,7 +16,7 @@ Cython = "*"
 PyYAML = "*"
 json_tricks = "*"
 tensorboardX = ">=1.2"
-torch = "==0.4.1"
+torch = "==0.4.0"
 
 [requires]
 python_version = "3.6"
